@@ -69,7 +69,7 @@ describe('Tasks', function () {
           isNoteworthy: true
         })
         .end((err, res) => {
-          if (err) { return done() }
+          if (err) { return done(err) }
           expect(res).to.have.status(200)
           expect(res.body).to.be.a('object')
           expect(res.body.message).to.equal('Task created successfully!')
@@ -87,7 +87,7 @@ describe('Tasks', function () {
         .request(app)
         .get('/tasks')
         .end((err, res) => {
-          if (err) { return done() }
+          if (err) { return done(err) }
           expect(res).to.have.status(200)
           expect(res.body).to.be.a('object')
           expect(res.body.message).to.equal('Tasks returned successfully!')
@@ -107,7 +107,7 @@ describe('Tasks', function () {
           ownerId: 'sumit'
         })
         .end((err, res) => {
-          if (err) { return done() }
+          if (err) { return done(err) }
           expect(res).to.have.status(204)
 
           return done()
@@ -122,7 +122,7 @@ describe('Tasks', function () {
           ownerId: 'umit'
         })
         .end((err, res) => {
-          if (err) { return done() }
+          if (err) { return done(err) }
           expect(res).to.have.status(404)
           expect(res.body).to.be.a('object')
           expect(res.body.message).to.equal('Task not found')

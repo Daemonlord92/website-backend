@@ -5,9 +5,15 @@ const chaiHttp = require('chai-http')
 const app = require('../../../server')
 const authService = require('../../../services/authService')
 const addUser = require('../../utils/addUser')
+const cleanDb = require('../../utils/cleanDb')
+
 chai.use(chaiHttp)
 
 describe('contentTypeCheck', function () {
+  afterEach(function () {
+    cleanDb()
+  })
+
   it('should return 415 error when content-type application/json is not passed', function (done) {
     chai
       .request(app)
@@ -15,7 +21,7 @@ describe('contentTypeCheck', function () {
       .set('content-type', 'application/xml')
       .send()
       .end((err, res) => {
-        if (err) { return done() }
+        if (err) { return done(err) }
 
         expect(res).to.have.status(415)
         expect(res.body).to.be.a('object')
@@ -24,6 +30,7 @@ describe('contentTypeCheck', function () {
           error: 'Unsupported Media Type',
           message: 'Invalid content-type header: application/xml, expected: application/json'
         })
+
         return done()
       })
   })
@@ -36,6 +43,7 @@ describe('contentTypeCheck', function () {
         if (err) { return done(err) }
 
         expect(res).to.have.status(200)
+
         return done()
       })
   })
